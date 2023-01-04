@@ -200,15 +200,22 @@ class _SignUpPageState extends State<SignUpPage> {
                 InkWell(
                   onTap: () async {
                     if (formkey.currentState!.validate()) {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .createUserWithEmailAndPassword(
-                              email: _email.text, password: _pass.text);
-                      if (userCredential != null) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
+                      try {
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .createUserWithEmailAndPassword(
+                                email: _email.text, password: _pass.text);
+                        if (userCredential != null) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
+                        }
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'email-already-in-use') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('User Already Exist')));
+                        }
                       }
                     }
                   },
