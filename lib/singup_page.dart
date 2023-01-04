@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,9 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool isShowPass = false;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  //textControllers
+  final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
 
@@ -63,6 +67,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
+                    controller: _email,
                     decoration: InputDecoration(
                         focusedErrorBorder: OutlineInputBorder(
                             borderSide:
@@ -193,10 +198,18 @@ class _SignUpPageState extends State<SignUpPage> {
 
                 //SIGNUP BUTTON
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
                     if (formkey.currentState!.validate()) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
+                      UserCredential userCredential = await FirebaseAuth
+                          .instance
+                          .createUserWithEmailAndPassword(
+                              email: _email.text, password: _pass.text);
+                      if (userCredential != null) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+                      }
                     }
                   },
                   child: Container(

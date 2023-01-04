@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/dash_board_screen.dart';
 import 'package:first_app/singup_page.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isShowPass = false;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: TextFormField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                           focusedErrorBorder: OutlineInputBorder(
                               borderSide:
@@ -97,6 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: TextFormField(
+                        controller: _passwordController,
                         obscureText: !isShowPass,
                         decoration: InputDecoration(
                             focusedErrorBorder: OutlineInputBorder(
@@ -160,12 +166,26 @@ class _LoginPageState extends State<LoginPage> {
 
                   //LOGIN BUTTON
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       if (formkey.currentState!.validate()) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DashBoard()));
+                        try {
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .signInWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text);
+                          if (userCredential != null) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DashBoard()));
+                          }
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('User Not Found')));
+                          }
+                        }
                       }
                     },
                     child: Container(
