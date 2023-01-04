@@ -172,10 +172,10 @@ class _LoginPageState extends State<LoginPage> {
                           UserCredential userCredential = await FirebaseAuth
                               .instance
                               .signInWithEmailAndPassword(
-                                  email: _emailController.text,
-                                  password: _passwordController.text);
-                          if (userCredential != null) {
-                            Navigator.push(
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim());
+                          if (userCredential.user != null) {
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => DashBoard()));

@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_app/login_page.dart';
 import 'package:flutter/material.dart';
 
 class DashBoard extends StatefulWidget {
@@ -90,8 +92,37 @@ class _DashBoardState extends State<DashBoard> {
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('LogOut'),
-              onTap: () {
-                Navigator.pop(context);
+              onTap: () async {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                        child: AlertDialog(
+                            backgroundColor: Colors.grey.shade200,
+                            title: Text('Are You Sure Want To Logout?'),
+                            actions: [
+                              TextButton(
+                                  onPressed: () async {
+                                    if (FirebaseAuth.instance.currentUser !=
+                                        null) {
+                                      await FirebaseAuth.instance.signOut();
+                                    }
+
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => LoginPage()),
+                                        (route) => false);
+                                  },
+                                  child: Text('Yes')),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('No'))
+                            ]),
+                      );
+                    });
               },
             ),
           ],
