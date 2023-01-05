@@ -10,6 +10,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool isShowPass = false;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   //textControllers
   final TextEditingController _email = TextEditingController();
@@ -67,6 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: _email,
                     decoration: InputDecoration(
                         focusedErrorBorder: OutlineInputBorder(
@@ -79,7 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.blue.shade900)),
-                        labelText: 'Username',
+                        labelText: 'Email',
                         prefixIcon: Icon(Icons.mail)),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -102,6 +104,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: _pass,
                       obscureText: !isShowPass,
                       decoration: InputDecoration(
@@ -154,6 +157,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: _confirmPass,
                     obscureText: !isShowPass,
                     decoration: InputDecoration(
@@ -200,6 +204,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 InkWell(
                   onTap: () async {
                     if (formkey.currentState!.validate()) {
+                      setState(() {
+                        isLoading = true;
+                      });
                       try {
                         UserCredential userCredential = await FirebaseAuth
                             .instance
@@ -214,7 +221,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'email-already-in-use') {
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('User Already Exist')));
+                              SnackBar(content: Text('User Already Exist!!!')));
+                        } else if (e.code == 'weak-password') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Weak Password!!!')));
                         }
                       }
                     }
@@ -245,7 +255,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Already Have an Account?',
+                      'Already have an account?',
                       style: TextStyle(color: Colors.black),
                     ),
                     InkWell(
@@ -264,6 +274,18 @@ class _SignUpPageState extends State<SignUpPage> {
                     )
                   ],
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+
+                isLoading
+                    ? Container(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.blue,
+                        ))
+                    : SizedBox()
               ],
             ),
           ),
