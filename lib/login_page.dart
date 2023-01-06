@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/dash_board_screen.dart';
 import 'package:first_app/forgot_password_page.dart';
+import 'package:first_app/google_sign_in.dart';
 import 'package:first_app/singup_page.dart';
 import 'package:flutter/material.dart';
 
@@ -278,6 +279,53 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         )
                       ],
+                    ),
+
+                    SizedBox(
+                      height: 20,
+                    ),
+
+                    //Google LOGIN BUTTON
+                    InkWell(
+                      onTap: () async {
+                        await Google_Sign_In().signInWithGoogle();
+
+                        setState(() {
+                          isLoading = true;
+                        });
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DashBoard()));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 3),
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Center(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                                height: 25,
+                                width: 25,
+                                child: Image.asset('lib/assets/google.png')),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Sign in Google ',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                          ],
+                        )),
+                      ),
                     ),
                     SizedBox(
                       height: 20,

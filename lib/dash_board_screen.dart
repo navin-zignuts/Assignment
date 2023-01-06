@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_app/google_sign_in.dart';
 import 'package:first_app/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard> {
   int indx = 0;
-
+  String? userEmail = FirebaseAuth.instance.currentUser?.email;
   List<Widget> screens = [
     Center(
       child: Text(
@@ -95,35 +96,49 @@ class _DashBoardState extends State<DashBoard> {
             child: ListView(
               children: [
                 UserAccountsDrawerHeader(
+                    currentAccountPicture: CircleAvatar(
+                      child: Icon(
+                        Icons.person,
+                        size: 40,
+                      ),
+                      backgroundColor: Colors.white,
+                    ),
                     accountName: Text(
-                      'Nisarg Chaniyara',
+                      '',
                       style: TextStyle(fontSize: 15),
                     ),
-                    accountEmail: Text('nisargc@zignuts.com')),
+                    accountEmail: Text('$userEmail')),
                 ListTile(
-                  leading: const Icon(Icons.book),
-                  title: const Text(' Payment method'),
+                  leading: const Icon(Icons.payment),
+                  title: const Text('Payment method'),
                   onTap: () {
                     Navigator.pop(context);
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.workspace_premium),
-                  title: const Text(' Address '),
+                  leading: const Icon(Icons.location_city),
+                  title: const Text('Address'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.password),
+                  title: const Text('Password'),
                   onTap: () {
                     Navigator.pop(context);
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.edit),
-                  title: const Text(' Household'),
+                  title: const Text('Household'),
                   onTap: () {
                     Navigator.pop(context);
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.logout),
-                  title: const Text('LogOut'),
+                  title: const Text('Log Out'),
                   onTap: () async {
                     showDialog(
                         context: context,
@@ -137,7 +152,7 @@ class _DashBoardState extends State<DashBoard> {
                                       onPressed: () async {
                                         if (FirebaseAuth.instance.currentUser !=
                                             null) {
-                                          await FirebaseAuth.instance.signOut();
+                                          await Google_Sign_In().signOut();
                                         }
 
                                         Navigator.pushAndRemoveUntil(
