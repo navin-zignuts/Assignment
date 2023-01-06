@@ -14,11 +14,13 @@ class Google_Sign_In {
         final AuthCredential authCredential = GoogleAuthProvider.credential(
             accessToken: googleSignInAuthentication.accessToken,
             idToken: googleSignInAuthentication.idToken);
-        await _auth.signInWithCredential(authCredential);
+        UserCredential result =
+            await _auth.signInWithCredential(authCredential);
+        return result;
       }
     } on FirebaseAuthException catch (e) {
       print(e.message);
-      throw e;
+      //throw e;
     }
   }
 

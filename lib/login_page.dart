@@ -288,15 +288,17 @@ class _LoginPageState extends State<LoginPage> {
                     //Google LOGIN BUTTON
                     InkWell(
                       onTap: () async {
-                        await Google_Sign_In().signInWithGoogle();
+                        if (await Google_Sign_In().signInWithGoogle() != null) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          await Google_Sign_In().signInWithGoogle();
 
-                        setState(() {
-                          isLoading = true;
-                        });
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DashBoard()));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DashBoard()));
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.all(20),
