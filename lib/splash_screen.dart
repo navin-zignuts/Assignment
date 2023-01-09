@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/dash_board_screen.dart';
 import 'package:first_app/login_page.dart';
+import 'package:first_app/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,10 +38,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.blue,
+        color: ColorManager.Primarytheme,
         child: Center(
             child: Text(
-          'FitApp',
+          'GroceryApp',
           style: TextStyle(
               fontSize: 34, fontWeight: FontWeight.bold, color: Colors.white),
         )),

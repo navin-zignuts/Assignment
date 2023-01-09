@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/login_page.dart';
+import 'package:first_app/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -34,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Icon(
                   Icons.person,
                   size: 80,
-                  color: Colors.blue,
+                  color: ColorManager.Primarytheme,
                 ),
                 SizedBox(
                   height: 20,
@@ -44,7 +45,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 Text(
                   'Welcome Fitness Enthusiast !!!',
                   style: TextStyle(
-                      fontWeight: FontWeight.w800, color: Colors.blueGrey),
+                      fontWeight: FontWeight.w800,
+                      color: ColorManager.Primarytheme),
                 ),
                 SizedBox(
                   height: 20,
@@ -57,7 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue.shade800),
+                        color: ColorManager.Primarytheme),
                   ),
                 ),
                 SizedBox(
@@ -73,16 +75,22 @@ class _SignUpPageState extends State<SignUpPage> {
                     decoration: InputDecoration(
                         focusedErrorBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Colors.blue.shade900)),
+                                BorderSide(color: ColorManager.Primarytheme)),
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide:
+                                BorderSide(color: ColorManager.Primarytheme)),
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide:
+                                BorderSide(color: ColorManager.Primarytheme)),
                         focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Colors.blue.shade900)),
+                                BorderSide(color: ColorManager.Primarytheme)),
                         labelText: 'Email',
-                        prefixIcon: Icon(Icons.mail)),
+                        labelStyle: TextStyle(color: ColorManager.Primarytheme),
+                        prefixIcon: Icon(
+                          Icons.mail,
+                          color: ColorManager.Primarytheme,
+                        )),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Please enter your email address';
@@ -110,16 +118,23 @@ class _SignUpPageState extends State<SignUpPage> {
                       decoration: InputDecoration(
                           focusedErrorBorder: OutlineInputBorder(
                               borderSide:
-                                  BorderSide(color: Colors.blue.shade900)),
+                                  BorderSide(color: ColorManager.Primarytheme)),
                           errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue)),
+                              borderSide:
+                                  BorderSide(color: ColorManager.Primarytheme)),
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue)),
+                              borderSide:
+                                  BorderSide(color: ColorManager.Primarytheme)),
                           focusedBorder: OutlineInputBorder(
                               borderSide:
-                                  BorderSide(color: Colors.blue.shade900)),
+                                  BorderSide(color: ColorManager.Primarytheme)),
                           labelText: 'Password',
-                          prefixIcon: Icon(Icons.lock),
+                          labelStyle:
+                              TextStyle(color: ColorManager.Primarytheme),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: ColorManager.Primarytheme,
+                          ),
                           suffixIcon: InkWell(
                               onTap: () {
                                 setState(() {
@@ -130,9 +145,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                   }
                                 });
                               },
-                              child: Icon(isShowPass
-                                  ? Icons.visibility_off
-                                  : Icons.visibility))),
+                              child: Icon(
+                                isShowPass
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: ColorManager.Primarytheme,
+                              ))),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Required";
@@ -163,16 +181,22 @@ class _SignUpPageState extends State<SignUpPage> {
                     decoration: InputDecoration(
                         focusedErrorBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Colors.blue.shade900)),
+                                BorderSide(color: ColorManager.Primarytheme)),
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide:
+                                BorderSide(color: ColorManager.Primarytheme)),
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide:
+                                BorderSide(color: ColorManager.Primarytheme)),
                         focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Colors.blue.shade900)),
+                                BorderSide(color: ColorManager.Primarytheme)),
                         labelText: 'Confirm Password',
-                        prefixIcon: Icon(Icons.lock),
+                        labelStyle: TextStyle(color: ColorManager.Primarytheme),
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          color: ColorManager.Primarytheme,
+                        ),
                         suffixIcon: InkWell(
                             onTap: () {
                               setState(() {
@@ -183,9 +207,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                 }
                               });
                             },
-                            child: Icon(isShowPass
-                                ? Icons.visibility_off
-                                : Icons.visibility))),
+                            child: Icon(
+                              isShowPass
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: ColorManager.Primarytheme,
+                            ))),
                     validator: (value) {
                       if (value != _pass.text) {
                         return 'Password Doesn\'t Match';
@@ -233,7 +260,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     padding: EdgeInsets.all(20),
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: ColorManager.Primarytheme,
                         borderRadius: BorderRadius.circular(10)),
                     child: Center(
                         child: Text(
@@ -268,7 +295,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Text(
                         ' Login',
                         style: TextStyle(
-                            color: Colors.blue.shade800,
+                            color: ColorManager.Primarytheme,
                             fontWeight: FontWeight.bold),
                       ),
                     )
@@ -283,7 +310,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         height: 20,
                         width: 20,
                         child: CircularProgressIndicator(
-                          color: Colors.blue,
+                          color: ColorManager.Primarytheme,
                         ))
                     : SizedBox()
               ],

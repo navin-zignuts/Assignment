@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/google_sign_in.dart';
+import 'package:first_app/lists.dart';
 import 'package:first_app/login_page.dart';
+import 'package:first_app/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class DashBoard extends StatefulWidget {
@@ -22,10 +24,7 @@ class _DashBoardState extends State<DashBoard> {
       child: Text('Vendors',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
     ),
-    Center(
-      child: Text('Lists',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-    ),
+    WLists(),
     Center(
       child: Text('Categories',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
@@ -70,10 +69,11 @@ class _DashBoardState extends State<DashBoard> {
       },
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            title: Text('Dashbooard'),
-            centerTitle: true,
-          ),
+          // appBar: AppBar(
+          //   backgroundColor: ColorManager.Primarytheme,
+          //   title: Text('Dashbooard'),
+          //   centerTitle: true,
+          // ),
           bottomNavigationBar: BottomNavigationBar(
               currentIndex: indx,
               onTap: (value) {
@@ -82,7 +82,7 @@ class _DashBoardState extends State<DashBoard> {
                 });
               },
               unselectedItemColor: Colors.grey,
-              fixedColor: Colors.blue,
+              fixedColor: ColorManager.Primarytheme,
               items: [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
                 BottomNavigationBarItem(
@@ -96,10 +96,12 @@ class _DashBoardState extends State<DashBoard> {
             child: ListView(
               children: [
                 UserAccountsDrawerHeader(
+                    decoration: BoxDecoration(color: ColorManager.Primarytheme),
                     currentAccountPicture: CircleAvatar(
                       child: Icon(
                         Icons.person,
                         size: 40,
+                        color: ColorManager.Primarytheme,
                       ),
                       backgroundColor: Colors.white,
                     ),
@@ -152,7 +154,7 @@ class _DashBoardState extends State<DashBoard> {
                                       onPressed: () async {
                                         if (FirebaseAuth.instance.currentUser !=
                                             null) {
-                                          await Google_Sign_In().signOut();
+                                          await FirebaseAuth.instance.signOut();
                                         }
 
                                         Navigator.pushAndRemoveUntil(
@@ -162,12 +164,19 @@ class _DashBoardState extends State<DashBoard> {
                                                     LoginPage()),
                                             (route) => false);
                                       },
-                                      child: Text('Yes')),
+                                      child: Text(
+                                        'Yes',
+                                        style: TextStyle(
+                                            color: ColorManager.Primarytheme),
+                                      )),
                                   TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: Text('No'))
+                                      child: Text('No',
+                                          style: TextStyle(
+                                              color:
+                                                  ColorManager.Primarytheme)))
                                 ]),
                           );
                         });

@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/dash_board_screen.dart';
 import 'package:first_app/forgot_password_page.dart';
-import 'package:first_app/google_sign_in.dart';
+import 'package:first_app/resources/assets_manager.dart';
+import 'package:first_app/resources/color_manager.dart';
 import 'package:first_app/singup_page.dart';
 import 'package:flutter/material.dart';
 
@@ -64,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                     Icon(
                       Icons.lock,
                       size: 80,
-                      color: Colors.blue,
+                      color: ColorManager.Primarytheme,
                     ),
                     SizedBox(
                       height: 20,
@@ -74,7 +75,8 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       'Welcome Back Fitness Enthusiast',
                       style: TextStyle(
-                          fontWeight: FontWeight.w800, color: Colors.blueGrey),
+                          fontWeight: FontWeight.w800,
+                          color: ColorManager.Primarytheme),
                     ),
                     SizedBox(
                       height: 20,
@@ -87,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue.shade800),
+                            color: ColorManager.Primarytheme),
                       ),
                     ),
                     SizedBox(
@@ -102,17 +104,24 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _emailController,
                         decoration: InputDecoration(
                             focusedErrorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.blue.shade900)),
+                                borderSide: BorderSide(
+                                    color: ColorManager.Primarytheme)),
                             errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue)),
+                                borderSide: BorderSide(
+                                    color: ColorManager.Primarytheme)),
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue)),
+                                borderSide: BorderSide(
+                                    color: ColorManager.Primarytheme)),
                             focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.blue.shade900)),
+                                borderSide: BorderSide(
+                                    color: ColorManager.Primarytheme)),
                             labelText: 'Email',
-                            prefixIcon: Icon(Icons.mail)),
+                            labelStyle:
+                                TextStyle(color: ColorManager.Primarytheme),
+                            prefixIcon: Icon(
+                              Icons.mail,
+                              color: ColorManager.Primarytheme,
+                            )),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Please enter your email address';
@@ -139,17 +148,24 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: !isShowPass,
                           decoration: InputDecoration(
                               focusedErrorBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.blue.shade900)),
+                                  borderSide: BorderSide(
+                                      color: ColorManager.Primarytheme)),
                               errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue)),
+                                  borderSide: BorderSide(
+                                      color: ColorManager.Primarytheme)),
                               enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue)),
+                                  borderSide: BorderSide(
+                                      color: ColorManager.Primarytheme)),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.blue.shade900)),
+                                  borderSide: BorderSide(
+                                      color: ColorManager.Primarytheme)),
                               labelText: 'Password',
-                              prefixIcon: Icon(Icons.lock),
+                              labelStyle:
+                                  TextStyle(color: ColorManager.Primarytheme),
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: ColorManager.Primarytheme,
+                              ),
                               suffixIcon: InkWell(
                                   onTap: () {
                                     setState(() {
@@ -160,9 +176,12 @@ class _LoginPageState extends State<LoginPage> {
                                       }
                                     });
                                   },
-                                  child: Icon(isShowPass
-                                      ? Icons.visibility_off
-                                      : Icons.visibility))),
+                                  child: Icon(
+                                    isShowPass
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: ColorManager.Primarytheme,
+                                  ))),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "Required";
@@ -223,6 +242,10 @@ class _LoginPageState extends State<LoginPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => DashBoard()));
+                            } else {
+                              setState(() {
+                                isLoading = false;
+                              });
                             }
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'user-not-found') {
@@ -239,7 +262,7 @@ class _LoginPageState extends State<LoginPage> {
                         padding: EdgeInsets.all(20),
                         margin: EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: ColorManager.Primarytheme,
                             borderRadius: BorderRadius.circular(10)),
                         child: Center(
                             child: Text(
@@ -274,7 +297,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             ' SignUp',
                             style: TextStyle(
-                                color: Colors.blue.shade800,
+                                color: ColorManager.Primarytheme,
                                 fontWeight: FontWeight.bold),
                           ),
                         )
@@ -287,19 +310,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     //Google LOGIN BUTTON
                     InkWell(
-                      onTap: () async {
-                        if (await Google_Sign_In().signInWithGoogle() != null) {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          await Google_Sign_In().signInWithGoogle();
-
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DashBoard()));
-                        }
-                      },
+                      onTap: () async {},
                       child: Container(
                         padding: EdgeInsets.all(20),
                         margin: EdgeInsets.symmetric(horizontal: 20),
@@ -314,7 +325,7 @@ class _LoginPageState extends State<LoginPage> {
                             Container(
                                 height: 25,
                                 width: 25,
-                                child: Image.asset('lib/assets/google.png')),
+                                child: Image.asset(ImageAssets.GoogleLogo)),
                             SizedBox(
                               width: 10,
                             ),
@@ -337,7 +348,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 20,
                             width: 20,
                             child: CircularProgressIndicator(
-                              color: Colors.blue,
+                              color: ColorManager.Primarytheme,
                             ))
                         : SizedBox()
                   ]),
