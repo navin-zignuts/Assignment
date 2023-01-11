@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class ColorManager {
   static Color Primarytheme = HexColor.fromHex("#1E8040");
-  static Color faButton = HexColor.fromHex("#F8FFEB");
+  static Color faButton = HexColor.fromHex("#E8FEBE");
+  static Color pr_desc = HexColor.fromHex('#B11F1F');
+  static Color discount = HexColor.fromHex('#8BC53F');
 
   static Color darkGrey = HexColor.fromHex("#525252");
   static Color grey = HexColor.fromHex("#737477");

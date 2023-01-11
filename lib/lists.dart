@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:first_app/product_list.dart';
 import 'package:first_app/resources/color_manager.dart';
 import 'package:first_app/resources/fonts_manager.dart';
 import 'package:flutter/material.dart';
@@ -79,42 +80,54 @@ class _WListsState extends State<WLists> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Card(
-                            elevation: 1.5,
-                            child: Container(
-                              height: 100,
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        snapshot.data?.docs[index]['name'],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 100,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          color: ColorManager.faButton),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, top: 10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text('Quantity - 0'),
-                                            Text('Total - Rs 0')
-                                          ],
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Products(
+                                          title:
+                                              "${snapshot.data?.docs[index]['name']}",
+                                        )));
+                          },
+                          child: Card(
+                              elevation: 1.5,
+                              child: Container(
+                                height: 100,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          snapshot.data?.docs[index]['name'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                    )
-                                  ]),
-                            )),
+                                      Container(
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                            color: ColorManager.faButton),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, top: 10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text('Quantity - 0'),
+                                              Text('Total - Rs 0')
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ]),
+                              )),
+                        ),
                       );
                     });
               },
@@ -153,6 +166,7 @@ class _WListsState extends State<WLists> {
                               child: InkWell(
                                 onTap: () {
                                   addData();
+                                  _listnames.clear();
                                 },
                                 child: Icon(
                                   Icons.add,
