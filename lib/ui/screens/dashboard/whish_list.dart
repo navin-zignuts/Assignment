@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:first_app/ui/screens/dashboard/dash_board_screen.dart';
+import 'package:first_app/ui/screens/dashboard/home_sceen.dart';
 import 'package:first_app/ui/screens/dashboard/product_list.dart';
 import 'package:first_app/resources/color_manager.dart';
 import 'package:flutter/material.dart';
@@ -39,9 +41,14 @@ class _WListsState extends State<WLists> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(
-                Icons.arrow_back,
-                color: ColorManager.Primarytheme,
+              InkWell(
+                onTap: (){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DashBoard()));
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  color: ColorManager.Primarytheme,
+                ),
               ),
               const SizedBox(
                 width: 10,

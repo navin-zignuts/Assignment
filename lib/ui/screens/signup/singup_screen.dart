@@ -21,6 +21,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool isLoading = false;
 
   //textControllers
+  final TextEditingController _username = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
@@ -70,6 +71,31 @@ class _SignUpPageState extends State<SignUpPage> {
                         color: ColorManager.Primarytheme),
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+
+
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    controller: _username,
+                    decoration: CommonUtilities.getTextInputDecor(StringManager.Username, Icons.person,colorIcon: ColorManager.Primarytheme,colorBorder: ColorManager.Primarytheme),
+
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return StringManager.UsernameError;
+                      }
+
+                      // Return null if the entered email is valid
+                      return null;
+                    },
+                  ),
+                ),
+
+
                 const SizedBox(
                   height: 20,
                 ),
@@ -175,7 +201,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       setState(() {
                         isLoading = true;
                       });
-                      await _signup.signup_services(email: _email.text, password: _pass.text,context: context);
+                      await _signup.signup_services(email: _email.text, password: _pass.text,username:_username.text,context: context);
                       setState(() {
                         isLoading = false;
                       });

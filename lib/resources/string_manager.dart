@@ -32,6 +32,9 @@ class StringManager {
   static const String PasswordMatchError = 'Password Doesn\'t Match';
   static const String AlreadyHaveAccount = 'Already have an account?';
   static const String Login = ' Login';
+  static const String Username = 'Username';
+  static const String UsernameError = 'Please enter Username';
+
 
 
   static const String ResetPass = 'Reset Password';

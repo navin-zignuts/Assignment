@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/resources/color_manager.dart';
 import 'package:first_app/resources/string_manager.dart';
 import 'package:first_app/ui/screens/login/login_screen.dart';
+import 'package:first_app/user_preferences/user_preferences.dart';
 import 'package:flutter/material.dart';
 
 class Alert_Dialog {
@@ -13,10 +14,10 @@ class Alert_Dialog {
         content: Text(StringManager.LogoutAlertDialogMessage),
         actions: [
           TextButton(
-              onPressed: () {
-
+              onPressed: () async{
                 FirebaseAuth.instance.signOut();
-
+                await UserPreferences.clearDetailsOnSignOut();
+                print('EMAIL:  ${await UserPreferences.getUserEmail()}');
 
                 // ignore: use_build_context_synchronously
                 Navigator.pushAndRemoveUntil(

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_app/authentication/auth_login_service.dart';
 import 'package:first_app/resources/color_manager.dart';
 import 'package:first_app/resources/string_manager.dart';
 import 'package:first_app/ui/dialog/alert_dialog.dart';
@@ -11,6 +12,22 @@ class HomeWithDash extends StatefulWidget{
 
 class _HomeWithDashState extends State<HomeWithDash> {
   String? userEmail = FirebaseAuth.instance.currentUser?.email;
+  String? username;
+
+  final _login = Login();
+  User? _user;
+  @override
+  void initState() {
+    _user = _login.getUser();
+    setState(() {
+      userEmail = _user?.email;
+      username = _user?.displayName;
+    });
+
+    super.initState();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +47,7 @@ class _HomeWithDashState extends State<HomeWithDash> {
                 ),
                 // ignore: prefer_const_constructors
                 accountName: Text(
-                  '',
+                  '${username}',
                   style: const TextStyle(fontSize: 15),
                 ),
                 accountEmail: Text('$userEmail')),
