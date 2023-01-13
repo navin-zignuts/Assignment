@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ColorManager {
+  // ignore: non_constant_identifier_names
   static Color Primarytheme = HexColor.fromHex("#1E8040");
   static Color faButton = HexColor.fromHex("#E8FEBE");
+  // ignore: non_constant_identifier_names
   static Color pr_desc = HexColor.fromHex('#B11F1F');
   static Color discount = HexColor.fromHex('#8BC53F');
+  static Color black = HexColor.fromHex('#000000');
 
   static Color darkGrey = HexColor.fromHex("#525252");
   static Color grey = HexColor.fromHex("#737477");
@@ -22,6 +25,7 @@ extension HexColor on Color {
   static Color fromHex(String hexColorString) {
     hexColorString = hexColorString.replaceAll('#', '');
     if (hexColorString.length == 6) {
+      // ignore: prefer_interpolation_to_compose_strings
       hexColorString = 'FF' + hexColorString; // 8 Char with opacity 100%
     }
     return Color(int.parse(hexColorString, radix: 16));

@@ -1,13 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_app/login_page.dart';
+
+import 'package:first_app/authentication/auth_forgot_pass_service.dart';
+import 'package:first_app/ui/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../../resources/color_manager.dart';
+import '../../../resources/string_manager.dart';
+import '../../../utilites/common_utilities.dart';
+
 class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({super.key});
+
   @override
   State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+  final Forgot _forgot = Forgot();
   bool isLoading = false;
   final TextEditingController _emailController = TextEditingController();
 
@@ -22,10 +30,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           elevation: 0,
           leading: InkWell(
             onTap: () {
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (conext) => LoginPage()));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.blue,
             ),
@@ -39,13 +47,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.10,
               ),
+              // ignore: avoid_unnecessary_containers
               Container(
                 child: Text(
-                  'Reset Password',
+                  StringManager.ResetPass,
                   style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue.shade800),
+                      color: ColorManager.Primarytheme),
                 ),
               ),
 
@@ -53,10 +62,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 height: MediaQuery.of(context).size.height * 0.025,
               ),
 
+              // ignore: avoid_unnecessary_containers
               Container(
-                child: Text('Password reset link will be send on your email',
+                child:  Text(
+                    StringManager.ResetPassMessage,
                     style: TextStyle(
-                        fontWeight: FontWeight.w800, color: Colors.blueGrey)),
+                        fontWeight: FontWeight.w800, color: ColorManager.Primarytheme)),
               ),
 
               SizedBox(
@@ -68,24 +79,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 child: TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: _emailController,
-                  decoration: InputDecoration(
-                      focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue.shade900)),
-                      errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue)),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue.shade900)),
-                      labelText: 'Email',
-                      prefixIcon: Icon(Icons.mail)),
+                  decoration: CommonUtilities.getTextInputDecor(
+                     StringManager.Email, Icons.mail,
+                      colorBorder: ColorManager.Primarytheme,
+                      colorIcon: ColorManager.Primarytheme),
+
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your email address';
+                      return StringManager.EmailError;
                     }
                     // Check if the entered email has the right format
                     if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-                      return 'Please enter a valid email address';
+                      return StringManager.EmailValidError;
                     }
                     // Return null if the entered email is valid
                     return null;
@@ -104,34 +109,23 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     setState(() {
                       isLoading = true;
                     });
-                    try {
-                      await FirebaseAuth.instance
-                          .sendPasswordResetEmail(
-                            email: _emailController.text.trim(),
-                          )
-                          .then((value) => Navigator.of(context).pop());
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                              'Password Reset Link Successfully Sent!!!')));
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('User Not Found!!!')));
-                      }
-                    }
+
+                    await _forgot.forgot_pass_service(email: _emailController.text);
+
                   }
                 },
                 child: Container(
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.all(20),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: ColorManager.Primarytheme,
                       borderRadius: BorderRadius.circular(10)),
+                  // ignore: prefer_const_constructors
                   child: Center(
-                      child: Text(
-                    'Reset',
+                      child:  Text(
+                    StringManager.Reset,
                     style: TextStyle(
-                        color: Colors.white,
+                        color: ColorManager.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16),
                   )),
@@ -141,13 +135,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 height: MediaQuery.of(context).size.height * 0.045,
               ),
               isLoading
-                  ? Container(
+                  // ignore: prefer_const_constructors
+                  ? SizedBox(
                       height: 20,
                       width: 20,
-                      child: CircularProgressIndicator(
+                      child: const CircularProgressIndicator(
                         color: Colors.blue,
                       ))
-                  : SizedBox()
+                  : const SizedBox()
             ],
           ),
         ),

@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:first_app/product_list.dart';
+import 'package:first_app/ui/screens/dashboard/product_list.dart';
 import 'package:first_app/resources/color_manager.dart';
-import 'package:first_app/resources/fonts_manager.dart';
 import 'package:flutter/material.dart';
 
 class WLists extends StatefulWidget {
+  const WLists({super.key});
+
   @override
   State<WLists> createState() => _WListsState();
 }
@@ -17,7 +18,12 @@ class _WListsState extends State<WLists> {
 
   //to add data in firebase
   addData() {
-    Map<String, dynamic> data = {'name': _listnames.text};
+    Map<String, dynamic> data = {
+      'name': _listnames.text,
+      'quantity': 0,
+      'total': 0
+    };
+
     CollectionReference collectionReference =
         FirebaseFirestore.instance.collection('Lists');
     collectionReference.add(data);
@@ -37,7 +43,7 @@ class _WListsState extends State<WLists> {
                 Icons.arrow_back,
                 color: ColorManager.Primarytheme,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(
@@ -55,7 +61,7 @@ class _WListsState extends State<WLists> {
                 Icons.search,
                 color: ColorManager.Primarytheme,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Icon(
@@ -73,7 +79,7 @@ class _WListsState extends State<WLists> {
               stream: db,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
                 return ListView.builder(
                     itemCount: snapshot.data?.docs.length,
@@ -92,6 +98,7 @@ class _WListsState extends State<WLists> {
                           },
                           child: Card(
                               elevation: 1.5,
+                              // ignore: sized_box_for_whitespace
                               child: Container(
                                 height: 100,
                                 child: Row(
@@ -103,7 +110,7 @@ class _WListsState extends State<WLists> {
                                             const EdgeInsets.only(left: 10),
                                         child: Text(
                                           snapshot.data?.docs[index]['name'],
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -119,8 +126,10 @@ class _WListsState extends State<WLists> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Text('Quantity - 0'),
-                                              Text('Total - Rs 0')
+                                              Text(
+                                                  'Quantity - ${snapshot.data?.docs[index]['quantity'].toString() ?? ''}'),
+                                              Text(
+                                                  'Total - ${snapshot.data?.docs[index]['total'].toString() ?? ''}')
                                             ],
                                           ),
                                         ),
