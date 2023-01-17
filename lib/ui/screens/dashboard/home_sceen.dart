@@ -1,31 +1,33 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_app/authentication/auth_login_service.dart';
 import 'package:first_app/resources/color_manager.dart';
 import 'package:first_app/resources/string_manager.dart';
 import 'package:first_app/ui/dialog/alert_dialog.dart';
-import 'package:first_app/ui/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
-class HomeWithDash extends StatefulWidget{
+
+class HomeWithDash extends StatefulWidget {
+  const HomeWithDash({super.key});
+
   @override
   State<HomeWithDash> createState() => _HomeWithDashState();
 }
 
 class _HomeWithDashState extends State<HomeWithDash> {
   String? userEmail = FirebaseAuth.instance.currentUser?.email;
-  String? username;
+  String? username = FirebaseAuth.instance.currentUser?.displayName;
+  String? user_id = FirebaseAuth.instance.currentUser?.uid;
 
-  final _login = Login();
-  User? _user;
+  //final _login = Login();
+  //User? _user;
+
   @override
   void initState() {
-    _user = _login.getUser();
-    setState(() {
-      userEmail = _user?.email;
-      username = _user?.displayName;
-    });
+    // _user = _login.getUser();
+    // setState(() {
+    //   userEmail = _user?.email;
+    //   username = _user?.displayName;
+    // });
 
     super.initState();
-
   }
 
   @override
@@ -47,7 +49,7 @@ class _HomeWithDashState extends State<HomeWithDash> {
                 ),
                 // ignore: prefer_const_constructors
                 accountName: Text(
-                  '${username}',
+                  '$username',
                   style: const TextStyle(fontSize: 15),
                 ),
                 accountEmail: Text('$userEmail')),
@@ -88,9 +90,7 @@ class _HomeWithDashState extends State<HomeWithDash> {
                     builder: (context) {
                       // ignore: avoid_unnecessary_containers
                       return Container(
-                        child: Alert_Dialog.signoutalertdialog(context)
-
-                      );
+                          child: Alert_Dialog.signoutalertdialog(context));
                     });
               },
             ),
@@ -99,7 +99,7 @@ class _HomeWithDashState extends State<HomeWithDash> {
       ),
       appBar: AppBar(
         backgroundColor: ColorManager.Primarytheme,
-        title: Text(StringManager.Dashboard),
+        title: const Text(StringManager.Dashboard),
         centerTitle: true,
       ),
     );

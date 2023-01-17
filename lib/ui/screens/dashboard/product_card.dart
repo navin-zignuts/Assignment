@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:first_app/database_services/firebase_service.dart';
 import 'package:first_app/resources/assets_manager.dart';
 import 'package:first_app/resources/color_manager.dart';
+import 'package:first_app/user_preferences/user_preferences.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ProductCard extends StatefulWidget {
-  ProductCard({super.key, required this.snapshot});
+  String wishid;
+  ProductCard({super.key, required this.snapshot, required this.wishid});
   DataSnapshot snapshot;
 
   @override
@@ -13,6 +17,35 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
+  int qty = 0;
+  int total = 0;
+  getQuantity() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var quary = await firestore
+        .collection("Cart")
+        .where("pid", isEqualTo: widget.snapshot.child("pid").value)
+        .where("wishid", isEqualTo: widget.wishid)
+        .get();
+    if (quary.size == 0) {
+    } else {
+      var cId = quary.docs.first.id;
+      var x = await firestore
+          .collection("Cart")
+          .doc(cId)
+          .get()
+          .then((value) => value.get("quantity"));
+      setState(() {
+        qty = x;
+      });
+    }
+  }
+
+  void initState() {
+    getQuantity();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -46,13 +79,14 @@ class _ProductCardState extends State<ProductCard> {
                   Positioned(
                       child: Container(
                     height: 15,
-                    width: 80,
+                    width: 85,
                     decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
-                            bottomRight: Radius.circular(25)),
+                            topLeft: Radius.circular(15),
+                            bottomRight: Radius.circular(15)),
                         color: ColorManager.discount),
                     child: Text(
-                      '10% Discount',
+                      '  10% Discount',
                       style: TextStyle(
                           color: ColorManager.white,
                           fontSize: 12,
@@ -157,16 +191,92 @@ class _ProductCardState extends State<ProductCard> {
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  Text(widget.snapshot
-                                      .child('quantity')
-                                      .value
-                                      .toString()),
+                                  Text('$qty'),
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  Icon(
-                                    Icons.add_circle_outline,
-                                    color: ColorManager.Primarytheme,
+                                  InkWell(
+                                    onTap: () async {
+                                      setState(() {
+                                        qty += 1;
+                                        total = (widget.snapshot
+                                                .child('prize')
+                                                .value as int) *
+                                            qty;
+                                      });
+
+                                      dbFirebase.createCart(
+                                          qty,
+                                          total,
+                                          widget.wishid,
+                                          widget.snapshot.child('pid').value);
+
+                                      dbFirebase.createWishlistTotalAndQuantity(
+                                          widget.wishid,
+                                          widget.snapshot.child("prize").value);
+                                      // FirebaseFirestore firestore =
+                                      //     FirebaseFirestore.instance;
+
+                                      // var query = await firestore
+                                      //     .collection('Cart')
+                                      //     .where('pid',
+                                      //         isEqualTo: widget.snapshot
+                                      //             .child('pid')
+                                      //             .value)
+                                      //     .where('wishid',
+                                      //         isEqualTo: widget.wishid)
+                                      //     .get();
+
+                                      // if (query.size == 0) {
+                                      //   FirebaseFirestore.instance
+                                      //       .collection('Cart')
+                                      //       .add({
+                                      //     'uid':
+                                      //         await UserPreferences.getUserId(),
+                                      //     'pid': widget.snapshot
+                                      //         .child('pid')
+                                      //         .value,
+                                      //     'quantity': qty,
+                                      //     'total': total,
+                                      //     'wishid': widget.wishid
+                                      //   });
+                                      // } else {
+                                      //   var docid = query.docs.first.id;
+                                      //   firestore
+                                      //       .collection('Cart')
+                                      //       .doc(docid)
+                                      //       .update({
+                                      //     'quantity': qty,
+                                      //     'total': total
+                                      //   });
+                                      // }
+
+                                      // var dbqty = await firestore
+                                      //     .collection("Wishlist")
+                                      //     .doc(widget.wishid)
+                                      //     .get()
+                                      //     .then(
+                                      //         (value) => value.get("quantity"));
+
+                                      // var dbTotal = await firestore
+                                      //     .collection("Wishlist")
+                                      //     .doc(widget.wishid)
+                                      //     .get()
+                                      //     .then((value) => value.get("total"));
+
+                                      // await firestore
+                                      //     .collection("Wishlist")
+                                      //     .doc(widget.wishid)
+                                      //     .update({
+                                      //   "quantity": dbqty += 1,
+                                      //   "total": dbTotal +=
+                                      //       widget.snapshot.child("prize").value
+                                      // });
+                                    },
+                                    child: Icon(
+                                      Icons.add_circle_outline,
+                                      color: ColorManager.Primarytheme,
+                                    ),
                                   )
                                 ]),
                           )

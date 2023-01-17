@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:first_app/ui/screens/dashboard/product_card.dart';
@@ -7,8 +8,9 @@ import 'package:flutter/material.dart';
 
 class Products extends StatefulWidget {
   final String title;
+  String wishid;
 
-  const Products({super.key, required this.title});
+  Products({super.key, required this.title, required this.wishid});
   @override
   State<Products> createState() => _ProductsState();
 }
@@ -61,7 +63,8 @@ class _ProductsState extends State<Products> {
                     child: FirebaseAnimatedList(
                   query: refDatabase,
                   itemBuilder: (contect, snapshot, animation, index) {
-                    return ProductCard(snapshot: snapshot);
+                    return ProductCard(
+                        wishid: widget.wishid, snapshot: snapshot);
                   },
                 )),
               ],
@@ -96,18 +99,34 @@ class _ProductsState extends State<Products> {
                               Image.asset(ImageAssets.Cart),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                //crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
-                                    'Totals 780',
+                                    'Totals',
                                     style: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 12,
                                     ),
                                   ),
-                                  Text('₹330',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: ColorManager.Primarytheme))
+                                  StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("Wishlist")
+                                        .doc(widget.wishid)
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        var data = snapshot.data?.get("total");
+                                        return Text(data.toString(),
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold));
+                                      } else {
+                                        return Text("0",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ));
+                                      }
+                                    },
+                                  )
                                 ],
                               )
                             ],

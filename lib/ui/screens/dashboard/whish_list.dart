@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_app/resources/string_manager.dart';
 import 'package:first_app/ui/screens/dashboard/dash_board_screen.dart';
-import 'package:first_app/ui/screens/dashboard/home_sceen.dart';
 import 'package:first_app/ui/screens/dashboard/product_list.dart';
 import 'package:first_app/resources/color_manager.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,9 @@ class WLists extends StatefulWidget {
 }
 
 class _WListsState extends State<WLists> {
-  var db = FirebaseFirestore.instance.collection('Lists').snapshots();
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final String? userId = FirebaseAuth.instance.currentUser?.uid;
+  var db = FirebaseFirestore.instance.collection('Wishlist').snapshots();
 
   final TextEditingController _listnames = TextEditingController();
   List<String> litems = [];
@@ -21,13 +24,14 @@ class _WListsState extends State<WLists> {
   //to add data in firebase
   addData() {
     Map<String, dynamic> data = {
-      'name': _listnames.text,
-      'quantity': 0,
-      'total': 0
+      "uid": userId,
+      "name": _listnames.text,
+      "quantity": 0,
+      "total": 0
     };
 
     CollectionReference collectionReference =
-        FirebaseFirestore.instance.collection('Lists');
+        FirebaseFirestore.instance.collection('Wishlist');
     collectionReference.add(data);
   }
 
@@ -42,8 +46,9 @@ class _WListsState extends State<WLists> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               InkWell(
-                onTap: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DashBoard()));
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => DashBoard()));
                 },
                 child: Icon(
                   Icons.arrow_back,
@@ -83,7 +88,11 @@ class _WListsState extends State<WLists> {
         child: Stack(
           children: [
             StreamBuilder<QuerySnapshot>(
-              stream: db,
+              stream: FirebaseFirestore.instance
+                  .collection("Wishlist")
+                  .where("uid",
+                      isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const CircularProgressIndicator();
@@ -91,6 +100,9 @@ class _WListsState extends State<WLists> {
                 return ListView.builder(
                     itemCount: snapshot.data?.docs.length,
                     itemBuilder: (context, index) {
+                      QueryDocumentSnapshot<Object?> documentSnapshot =
+                          snapshot.data!.docs.elementAt(index);
+
                       return Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: GestureDetector(
@@ -99,6 +111,7 @@ class _WListsState extends State<WLists> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Products(
+                                          wishid: documentSnapshot.id,
                                           title:
                                               "${snapshot.data?.docs[index]['name']}",
                                         )));
@@ -157,39 +170,57 @@ class _WListsState extends State<WLists> {
                   decoration: BoxDecoration(
                       color: ColorManager.faButton,
                       borderRadius: BorderRadius.circular(30)),
-                  child: TextFormField(
-                    controller: _listnames,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(
-                                width: 2, color: ColorManager.Primarytheme)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(
-                                width: 2, color: ColorManager.Primarytheme)),
-                        hintText: "New List",
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: ColorManager.Primarytheme),
-                        suffixIcon: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: ColorManager.Primarytheme,
-                                  borderRadius: BorderRadius.circular(30)),
-                              child: InkWell(
-                                onTap: () {
-                                  addData();
-                                  _listnames.clear();
-                                },
-                                child: Icon(
-                                  Icons.add,
-                                  color: ColorManager.faButton,
-                                ),
-                              )),
-                        )),
+                  child: Form(
+                    key: formkey,
+                    child: TextFormField(
+                      controller: _listnames,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                  width: 2, color: ColorManager.Primarytheme)),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                  width: 2, color: ColorManager.Primarytheme)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                  width: 2, color: ColorManager.Primarytheme)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                  width: 2, color: ColorManager.Primarytheme)),
+                          hintText: "New List",
+                          hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: ColorManager.Primarytheme),
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    color: ColorManager.Primarytheme,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: InkWell(
+                                  onTap: () {
+                                    if (formkey.currentState!.validate()) {
+                                      addData();
+                                    }
+                                    _listnames.clear();
+                                  },
+                                  child: Icon(
+                                    Icons.add,
+                                    color: ColorManager.faButton,
+                                  ),
+                                )),
+                          )),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return StringManager.RequiredError;
+                        }
+                      },
+                    ),
                   ),
                 ),
               )
