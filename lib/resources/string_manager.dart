@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 class StringManager {
   static const String appName = 'GroceryApp';
   static const String noRouteFound = 'No route Found';
@@ -15,8 +17,10 @@ class StringManager {
   static const String Email = 'Email';
   static const String Password = 'Password';
   static const String RequiredError = 'Required';
-  static const String PasswordLength6Error = "Password must be atleast 6 characters long";
-  static const String PasswordLength20Error = "Password must be less than 20 characters";
+  static const String PasswordLength6Error =
+      "Password must be atleast 6 characters long";
+  static const String PasswordLength20Error =
+      "Password must be less than 20 characters";
   static const String PasswordNumberError = "Password must contain a number";
   static const String EmailError = 'Please enter your email address';
   static const String EmailValidError = 'Please enter a valid email address';
@@ -24,7 +28,6 @@ class StringManager {
   static const String No = 'No';
   static const String AlertTitle = 'Alert?';
   static const String AlertMessege = 'Are you sure want to exit?';
-
 
   static const String WelcomeMessageSignUp = 'Welcome Fitness Enthusiast !!!';
   static const String SignUpTitle = 'Sign Up';
@@ -35,12 +38,10 @@ class StringManager {
   static const String Username = 'Username';
   static const String UsernameError = 'Please enter Username';
 
-
-
   static const String ResetPass = 'Reset Password';
   static const String Reset = 'Reset';
-  static const String ResetPassMessage = 'Password reset link will be send on your email';
-
+  static const String ResetPassMessage =
+      'Password reset link will be send on your email';
 
   static const String HomeTitle = 'Home';
   static const String Vendors = 'Vendors';
@@ -54,7 +55,4 @@ class StringManager {
   static const String Logout = 'Log Out';
   static const String LogoutAlertDialogMessage = 'Are you sure want to logout?';
   static const String Yes = 'Yes';
-
-
-
 }

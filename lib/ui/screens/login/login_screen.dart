@@ -19,6 +19,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // ignore: prefer_final_fields
   Login _login = Login();
   bool isShowPass = false;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -204,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                       Text(
+                        const Text(
                           StringManager.DontHaveAccount,
                           style: TextStyle(color: Colors.black),
                         ),
@@ -233,7 +234,11 @@ class _LoginPageState extends State<LoginPage> {
                     InkWell(
                       onTap: () async {
                         await Google_Sign_In().signInWithGoogle();
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DashBoard()));
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const DashBoard()));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(20),
@@ -284,6 +289,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+// ignore: must_be_immutable
 class LoginButtonText extends StatelessWidget {
   String labelTxt;
 

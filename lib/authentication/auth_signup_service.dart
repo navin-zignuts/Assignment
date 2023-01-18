@@ -5,9 +5,9 @@ import 'package:first_app/ui/screens/dashboard/dash_board_screen.dart';
 import 'package:first_app/user_preferences/user_preferences.dart';
 import 'package:flutter/material.dart';
 
-import '../ui/screens/login/login_screen.dart';
-
+// ignore: camel_case_types
 class signup {
+  // ignore: non_constant_identifier_names
   signup_services(
       {required String email,
       required String password,
@@ -31,6 +31,7 @@ class signup {
 
       await UserPreferences.saveLoginUserInfo(
           ModelCustomer(id: user!.uid, name: username, email: email));
+      // ignore: avoid_print
       print('EMAIL:  ${await UserPreferences.getUserEmail()}');
 
       // ignore: unnecessary_null_comparison

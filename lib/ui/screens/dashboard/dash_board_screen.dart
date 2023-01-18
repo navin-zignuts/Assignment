@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/resources/string_manager.dart';
 import 'package:first_app/ui/dialog/alert_dialog.dart';
 import 'package:first_app/ui/screens/dashboard/home_sceen.dart';
 import 'package:first_app/ui/screens/dashboard/whish_list.dart';
-import 'package:first_app/ui/screens/login/login_screen.dart';
 import 'package:first_app/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +15,6 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   int indx = 0;
 
-
-
   List<Widget> screens = [
     // ignore: prefer_const_constructors
     // Center(
@@ -27,7 +23,7 @@ class _DashBoardState extends State<DashBoard> {
     //     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
     //   ),
     // ),
-    HomeWithDash(),
+    const HomeWithDash(),
     const Center(
       child: Text(StringManager.Vendors,
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
@@ -50,8 +46,7 @@ class _DashBoardState extends State<DashBoard> {
         final value = await showDialog(
             context: context,
             builder: (context) {
-               return Alert_Dialog.exitdialog(context);
-
+              return Alert_Dialog.exitdialog(context);
             });
         if (value != null) {
           return Future.value(value);
@@ -61,7 +56,6 @@ class _DashBoardState extends State<DashBoard> {
       },
       child: SafeArea(
         child: Scaffold(
-
           bottomNavigationBar: BottomNavigationBar(
               currentIndex: indx,
               onTap: (value) {
@@ -80,11 +74,11 @@ class _DashBoardState extends State<DashBoard> {
                 const BottomNavigationBarItem(
                     icon: Icon(Icons.list), label: StringManager.Lists),
                 const BottomNavigationBarItem(
-                    icon: Icon(Icons.category), label: StringManager.Categories),
+                    icon: Icon(Icons.category),
+                    label: StringManager.Categories),
                 const BottomNavigationBarItem(
                     icon: Icon(Icons.more), label: StringManager.Categories),
               ]),
-
           body: screens[indx],
         ),
       ),

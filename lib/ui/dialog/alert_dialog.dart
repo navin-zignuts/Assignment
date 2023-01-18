@@ -5,62 +5,56 @@ import 'package:first_app/ui/screens/login/login_screen.dart';
 import 'package:first_app/user_preferences/user_preferences.dart';
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class Alert_Dialog {
-  static signoutalertdialog (BuildContext context){
+  static signoutalertdialog(BuildContext context) {
     return AlertDialog(
         backgroundColor: Colors.grey.shade200,
-        title:
-        const Text(StringManager.AlertTitle),
-        content: Text(StringManager.LogoutAlertDialogMessage),
+        title: const Text(StringManager.AlertTitle),
+        content: const Text(StringManager.LogoutAlertDialogMessage),
         actions: [
           TextButton(
-              onPressed: () async{
+              onPressed: () async {
                 FirebaseAuth.instance.signOut();
                 await UserPreferences.clearDetailsOnSignOut();
+                // ignore: avoid_print
                 print('EMAIL:  ${await UserPreferences.getUserEmail()}');
 
                 // ignore: use_build_context_synchronously
                 Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        const LoginPage()),
-                        (route) => false);
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    (route) => false);
               },
               child: Text(
                 StringManager.Yes,
-                style: TextStyle(
-                    color: ColorManager.Primarytheme),
+                style: TextStyle(color: ColorManager.Primarytheme),
               )),
           TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               child: Text(StringManager.No,
-                  style: TextStyle(
-                      color:
-                      ColorManager.Primarytheme)))
+                  style: TextStyle(color: ColorManager.Primarytheme)))
         ]);
   }
 
-  static exitdialog(BuildContext context){
-return AlertDialog(
-  title: const Text(StringManager.AlertTitle),
-  content: const Text(StringManager.AlertMessege),
-  actions: [
-    ElevatedButton(
-        onPressed: () => Navigator.of(context).pop(false),
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            foregroundColor: Colors.white),
-        child: const Text(StringManager.No)),
-    ElevatedButton(
-        onPressed: () => Navigator.of(context).pop(true),
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            foregroundColor: Colors.white),
-        child: const Text(StringManager.Exit)),
-  ],
-);
+  static exitdialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text(StringManager.AlertTitle),
+      content: const Text(StringManager.AlertMessege),
+      actions: [
+        ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black, foregroundColor: Colors.white),
+            child: const Text(StringManager.No)),
+        ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black, foregroundColor: Colors.white),
+            child: const Text(StringManager.Exit)),
+      ],
+    );
   }
 }

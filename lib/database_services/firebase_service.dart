@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app/user_preferences/user_preferences.dart';
 
+// ignore: camel_case_types
 class dbFirebase {
   static createCart(qty, total, wishid, pid) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -28,7 +29,7 @@ class dbFirebase {
     }
   }
 
-  static createWishlistTotalAndQuantity(wishid, prize) async {
+  static addgetWishlistTotalAndQuantity(wishid, prize) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var dbqty = await firestore
         .collection("Wishlist")
@@ -46,5 +47,25 @@ class dbFirebase {
         .collection("Wishlist")
         .doc(wishid)
         .update({"quantity": dbqty += 1, "total": dbTotal += prize});
+  }
+
+  static removegetWishlistTotalAndQuantity(wishid, prize) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var dbqty = await firestore
+        .collection("Wishlist")
+        .doc(wishid)
+        .get()
+        .then((value) => value.get("quantity"));
+
+    var dbTotal = await firestore
+        .collection("Wishlist")
+        .doc(wishid)
+        .get()
+        .then((value) => value.get("total"));
+
+    await firestore
+        .collection("Wishlist")
+        .doc(wishid)
+        .update({"quantity": dbqty -= 1, "total": dbTotal -= prize});
   }
 }

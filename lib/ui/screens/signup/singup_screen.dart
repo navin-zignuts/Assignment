@@ -1,4 +1,3 @@
-
 import 'package:first_app/authentication/auth_signup_service.dart';
 import 'package:first_app/resources/string_manager.dart';
 import 'package:first_app/ui/screens/login/login_screen.dart';
@@ -14,7 +13,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-
+  // ignore: prefer_final_fields
   signup _signup = signup();
   bool isShowPass = false;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -75,15 +74,15 @@ class _SignUpPageState extends State<SignUpPage> {
                   height: 20,
                 ),
 
-
-
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: _username,
-                    decoration: CommonUtilities.getTextInputDecor(StringManager.Username, Icons.person,colorIcon: ColorManager.Primarytheme,colorBorder: ColorManager.Primarytheme),
-
+                    decoration: CommonUtilities.getTextInputDecor(
+                        StringManager.Username, Icons.person,
+                        colorIcon: ColorManager.Primarytheme,
+                        colorBorder: ColorManager.Primarytheme),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return StringManager.UsernameError;
@@ -95,7 +94,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
 
-
                 const SizedBox(
                   height: 20,
                 ),
@@ -106,8 +104,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: _email,
-                    decoration: CommonUtilities.getTextInputDecor(StringManager.Email, Icons.mail,colorIcon: ColorManager.Primarytheme,colorBorder: ColorManager.Primarytheme),
-
+                    decoration: CommonUtilities.getTextInputDecor(
+                        StringManager.Email, Icons.mail,
+                        colorIcon: ColorManager.Primarytheme,
+                        colorBorder: ColorManager.Primarytheme),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return StringManager.EmailError;
@@ -132,16 +132,20 @@ class _SignUpPageState extends State<SignUpPage> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: _pass,
                       obscureText: !isShowPass,
-                      decoration: CommonUtilities.getTextInputDecorPass(colorIcon: ColorManager.Primarytheme,colorBorder: ColorManager.Primarytheme,
-                          isLocked: isShowPass, StringManager.Password, Icons.lock, () {
-                            setState(() {
-                              if (isShowPass) {
-                                isShowPass = false;
-                              } else {
-                                isShowPass = true;
-                              }
-                            });
-                          }),
+                      decoration: CommonUtilities.getTextInputDecorPass(
+                          colorIcon: ColorManager.Primarytheme,
+                          colorBorder: ColorManager.Primarytheme,
+                          isLocked: isShowPass,
+                          StringManager.Password,
+                          Icons.lock, () {
+                        setState(() {
+                          if (isShowPass) {
+                            isShowPass = false;
+                          } else {
+                            isShowPass = true;
+                          }
+                        });
+                      }),
                       // ignore: body_might_complete_normally_nullable
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -170,16 +174,20 @@ class _SignUpPageState extends State<SignUpPage> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: _confirmPass,
                     obscureText: !isShowPass,
-                    decoration: CommonUtilities.getTextInputDecorPass(colorIcon: ColorManager.Primarytheme,colorBorder: ColorManager.Primarytheme,
-                        isLocked: isShowPass, StringManager.ConfirmPass, Icons.lock, () {
-                          setState(() {
-                            if (isShowPass) {
-                              isShowPass = false;
-                            } else {
-                              isShowPass = true;
-                            }
-                          });
-                        }),
+                    decoration: CommonUtilities.getTextInputDecorPass(
+                        colorIcon: ColorManager.Primarytheme,
+                        colorBorder: ColorManager.Primarytheme,
+                        isLocked: isShowPass,
+                        StringManager.ConfirmPass,
+                        Icons.lock, () {
+                      setState(() {
+                        if (isShowPass) {
+                          isShowPass = false;
+                        } else {
+                          isShowPass = true;
+                        }
+                      });
+                    }),
                     validator: (value) {
                       if (value != _pass.text) {
                         return StringManager.PasswordMatchError;
@@ -201,11 +209,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       setState(() {
                         isLoading = true;
                       });
-                      await _signup.signup_services(email: _email.text, password: _pass.text,username:_username.text,context: context);
+                      await _signup.signup_services(
+                          email: _email.text,
+                          password: _pass.text,
+                          username: _username.text,
+                          context: context);
                       setState(() {
                         isLoading = false;
                       });
-
                     }
                   },
                   child: Container(

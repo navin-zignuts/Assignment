@@ -3,10 +3,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:first_app/database_services/firebase_service.dart';
 import 'package:first_app/resources/assets_manager.dart';
 import 'package:first_app/resources/color_manager.dart';
-import 'package:first_app/user_preferences/user_preferences.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
+//ignore: must_be_immutable
 class ProductCard extends StatefulWidget {
   String wishid;
   ProductCard({super.key, required this.snapshot, required this.wishid});
@@ -40,9 +39,10 @@ class _ProductCardState extends State<ProductCard> {
     }
   }
 
+  @override
   void initState() {
     getQuantity();
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -54,7 +54,7 @@ class _ProductCardState extends State<ProductCard> {
       shadowColor: ColorManager.Primarytheme,
       child: Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-          height: 100,
+          height: 150,
           width: 100,
           child: Row(
             //mainAxisAlignment: MainAxisAlignment.,
@@ -64,7 +64,7 @@ class _ProductCardState extends State<ProductCard> {
                   Container(
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                    height: 100,
+                    height: 150,
                     width: 150,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -79,18 +79,21 @@ class _ProductCardState extends State<ProductCard> {
                   Positioned(
                       child: Container(
                     height: 15,
-                    width: 85,
+                    //width: 85,
                     decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(15),
                             bottomRight: Radius.circular(15)),
                         color: ColorManager.discount),
-                    child: Text(
-                      '  10% Discount',
-                      style: TextStyle(
-                          color: ColorManager.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Text(
+                        '  10% Discount',
+                        style: TextStyle(
+                            color: ColorManager.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   )),
                   Positioned(
@@ -143,17 +146,26 @@ class _ProductCardState extends State<ProductCard> {
                 ),
               ),
               const SizedBox(
-                width: 55,
+                width: 30,
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 8, top: 8),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    const SizedBox(
+                      height: 26,
+                    ),
                     const Text(
                       '1 x kg',
-                      style: TextStyle(fontSize: 13),
+                      style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     Row(
                       children: [
@@ -171,8 +183,11 @@ class _ProductCardState extends State<ProductCard> {
                         ),
                       ],
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 11),
+                      padding: const EdgeInsets.only(top: 5),
                       child: Column(
                         children: [
                           Container(
@@ -184,16 +199,49 @@ class _ProductCardState extends State<ProductCard> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(
-                                    Icons.remove_circle_outline,
-                                    color: ColorManager.Primarytheme,
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        if (qty >= 1) {
+                                          qty -= 1;
+
+                                          total = (widget.snapshot
+                                                  .child('prize')
+                                                  .value as int) *
+                                              qty;
+
+                                          dbFirebase.createCart(
+                                              qty,
+                                              total,
+                                              widget.wishid,
+                                              widget.snapshot
+                                                  .child('pid')
+                                                  .value);
+
+                                          dbFirebase
+                                              .removegetWishlistTotalAndQuantity(
+                                                  widget.wishid,
+                                                  widget.snapshot
+                                                      .child("prize")
+                                                      .value);
+                                        }
+                                      });
+                                    },
+                                    child: Icon(
+                                      Icons.remove_circle_outline,
+                                      color: ColorManager.Primarytheme,
+                                    ),
                                   ),
                                   const SizedBox(
-                                    width: 10,
+                                    width: 15,
                                   ),
-                                  Text('$qty'),
+                                  Text(
+                                    '$qty',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                   const SizedBox(
-                                    width: 10,
+                                    width: 15,
                                   ),
                                   InkWell(
                                     onTap: () async {
@@ -211,67 +259,9 @@ class _ProductCardState extends State<ProductCard> {
                                           widget.wishid,
                                           widget.snapshot.child('pid').value);
 
-                                      dbFirebase.createWishlistTotalAndQuantity(
+                                      dbFirebase.addgetWishlistTotalAndQuantity(
                                           widget.wishid,
                                           widget.snapshot.child("prize").value);
-                                      // FirebaseFirestore firestore =
-                                      //     FirebaseFirestore.instance;
-
-                                      // var query = await firestore
-                                      //     .collection('Cart')
-                                      //     .where('pid',
-                                      //         isEqualTo: widget.snapshot
-                                      //             .child('pid')
-                                      //             .value)
-                                      //     .where('wishid',
-                                      //         isEqualTo: widget.wishid)
-                                      //     .get();
-
-                                      // if (query.size == 0) {
-                                      //   FirebaseFirestore.instance
-                                      //       .collection('Cart')
-                                      //       .add({
-                                      //     'uid':
-                                      //         await UserPreferences.getUserId(),
-                                      //     'pid': widget.snapshot
-                                      //         .child('pid')
-                                      //         .value,
-                                      //     'quantity': qty,
-                                      //     'total': total,
-                                      //     'wishid': widget.wishid
-                                      //   });
-                                      // } else {
-                                      //   var docid = query.docs.first.id;
-                                      //   firestore
-                                      //       .collection('Cart')
-                                      //       .doc(docid)
-                                      //       .update({
-                                      //     'quantity': qty,
-                                      //     'total': total
-                                      //   });
-                                      // }
-
-                                      // var dbqty = await firestore
-                                      //     .collection("Wishlist")
-                                      //     .doc(widget.wishid)
-                                      //     .get()
-                                      //     .then(
-                                      //         (value) => value.get("quantity"));
-
-                                      // var dbTotal = await firestore
-                                      //     .collection("Wishlist")
-                                      //     .doc(widget.wishid)
-                                      //     .get()
-                                      //     .then((value) => value.get("total"));
-
-                                      // await firestore
-                                      //     .collection("Wishlist")
-                                      //     .doc(widget.wishid)
-                                      //     .update({
-                                      //   "quantity": dbqty += 1,
-                                      //   "total": dbTotal +=
-                                      //       widget.snapshot.child("prize").value
-                                      // });
                                     },
                                     child: Icon(
                                       Icons.add_circle_outline,

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_app/resources/string_manager.dart';
 import 'package:first_app/ui/screens/dashboard/dash_board_screen.dart';
 import 'package:first_app/ui/screens/dashboard/product_list.dart';
 import 'package:first_app/resources/color_manager.dart';
+import 'package:first_app/utilites/common_utilities.dart';
 import 'package:flutter/material.dart';
 
 class WLists extends StatefulWidget {
@@ -14,26 +14,11 @@ class WLists extends StatefulWidget {
 }
 
 class _WListsState extends State<WLists> {
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  //GlobalKey<FormState> formkey = GlobalKey<FormState>();
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
   var db = FirebaseFirestore.instance.collection('Wishlist').snapshots();
 
   final TextEditingController _listnames = TextEditingController();
-  List<String> litems = [];
-
-  //to add data in firebase
-  addData() {
-    Map<String, dynamic> data = {
-      "uid": userId,
-      "name": _listnames.text,
-      "quantity": 0,
-      "total": 0
-    };
-
-    CollectionReference collectionReference =
-        FirebaseFirestore.instance.collection('Wishlist');
-    collectionReference.add(data);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +32,10 @@ class _WListsState extends State<WLists> {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => DashBoard()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DashBoard()));
                 },
                 child: Icon(
                   Icons.arrow_back,
@@ -128,15 +115,42 @@ class _WListsState extends State<WLists> {
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 10),
-                                        child: Text(
-                                          snapshot.data?.docs[index]['name'],
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 30),
+                                              child: Text(
+                                                snapshot.data?.docs[index]
+                                                    ['name'],
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 18),
+                                              ),
+                                            ),
+                                            InkWell(
+                                                onTap: () {
+                                                  var wishid =
+                                                      documentSnapshot.id;
+                                                  FirebaseFirestore.instance
+                                                      .collection('Wishlist')
+                                                      .doc(wishid)
+                                                      .delete();
+                                                },
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  color:
+                                                      ColorManager.Primarytheme,
+                                                  size: 25,
+                                                ))
+                                          ],
                                         ),
                                       ),
                                       Container(
                                         height: 100,
-                                        width: 100,
+                                        width: 120,
                                         decoration: BoxDecoration(
                                             color: ColorManager.faButton),
                                         child: Padding(
@@ -147,9 +161,22 @@ class _WListsState extends State<WLists> {
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
                                               Text(
-                                                  'Quantity - ${snapshot.data?.docs[index]['quantity'].toString() ?? ''}'),
+                                                'Qty: ${snapshot.data?.docs[index]['quantity'].toString() ?? ''}',
+                                                style: TextStyle(
+                                                    color: ColorManager.black,
+                                                    fontSize: 13,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
                                               Text(
-                                                  'Total - ${snapshot.data?.docs[index]['total'].toString() ?? ''}')
+                                                'Total: ₹${snapshot.data?.docs[index]['total'].toString() ?? ''}',
+                                                style: TextStyle(
+                                                    color: ColorManager
+                                                        .Primarytheme,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              )
                                             ],
                                           ),
                                         ),
@@ -170,58 +197,25 @@ class _WListsState extends State<WLists> {
                   decoration: BoxDecoration(
                       color: ColorManager.faButton,
                       borderRadius: BorderRadius.circular(30)),
-                  child: Form(
-                    key: formkey,
-                    child: TextFormField(
+                  child: TextFormField(
                       controller: _listnames,
                       textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  width: 2, color: ColorManager.Primarytheme)),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  width: 2, color: ColorManager.Primarytheme)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  width: 2, color: ColorManager.Primarytheme)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  width: 2, color: ColorManager.Primarytheme)),
-                          hintText: "New List",
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: ColorManager.Primarytheme),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    color: ColorManager.Primarytheme,
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: InkWell(
-                                  onTap: () {
-                                    if (formkey.currentState!.validate()) {
-                                      addData();
-                                    }
-                                    _listnames.clear();
-                                  },
-                                  child: Icon(
-                                    Icons.add,
-                                    color: ColorManager.faButton,
-                                  ),
-                                )),
-                          )),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return StringManager.RequiredError;
+                      decoration: CommonUtilities.getTextInputDecorWishlist(
+                          _listnames, () {
+                        // ignore: unnecessary_null_comparison
+                        if (_listnames != null) {
+                          Map<String, dynamic> data = {
+                            "uid": userId,
+                            "name": _listnames.text,
+                            "quantity": 0,
+                            "total": 0
+                          };
+
+                          CollectionReference collectionReference =
+                              FirebaseFirestore.instance.collection('Wishlist');
+                          collectionReference.add(data);
                         }
-                      },
-                    ),
-                  ),
+                      })),
                 ),
               )
             ]),

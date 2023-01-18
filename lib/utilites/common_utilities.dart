@@ -1,11 +1,9 @@
-
+// ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'package:first_app/resources/color_manager.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CommonUtilities {
-
   //Input Text Form Field
   static getTextInputDecor(String labelText, IconData iconData,
       {Color colorBorder = Colors.black, Color colorIcon = Colors.black}) {
@@ -25,7 +23,6 @@ class CommonUtilities {
           color: colorIcon,
         ));
   }
-
 
   //Input TextFormField for Password
   static getTextInputDecorPass(
@@ -56,5 +53,42 @@ class CommonUtilities {
               isLocked ? Icons.visibility_off : Icons.visibility,
               color: colorIcon,
             )));
+  }
+
+  static getTextInputDecorWishlist(_listnames, Function() addData) {
+    return InputDecoration(
+        focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(width: 2, color: ColorManager.Primarytheme)),
+        errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(width: 2, color: ColorManager.Primarytheme)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(width: 2, color: ColorManager.Primarytheme)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(width: 2, color: ColorManager.Primarytheme)),
+        hintText: "New List",
+        hintStyle: TextStyle(
+            fontWeight: FontWeight.bold, color: ColorManager.Primarytheme),
+        suffixIcon: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: ColorManager.Primarytheme,
+                  borderRadius: BorderRadius.circular(30)),
+              child: InkWell(
+                onTap: () {
+                  _listnames.text.isEmpty ? null : addData();
+
+                  _listnames.clear();
+                },
+                child: Icon(
+                  Icons.add,
+                  color: ColorManager.faButton,
+                ),
+              )),
+        ));
   }
 }

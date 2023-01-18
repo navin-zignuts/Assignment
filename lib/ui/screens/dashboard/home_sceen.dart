@@ -14,6 +14,7 @@ class HomeWithDash extends StatefulWidget {
 class _HomeWithDashState extends State<HomeWithDash> {
   String? userEmail = FirebaseAuth.instance.currentUser?.email;
   String? username = FirebaseAuth.instance.currentUser?.displayName;
+  // ignore: non_constant_identifier_names
   String? user_id = FirebaseAuth.instance.currentUser?.uid;
 
   //final _login = Login();

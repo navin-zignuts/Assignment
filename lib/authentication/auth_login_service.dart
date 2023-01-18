@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/model/responses/customer.dart';
 import 'package:first_app/ui/screens/dashboard/dash_board_screen.dart';
@@ -5,6 +7,7 @@ import 'package:first_app/user_preferences/user_preferences.dart';
 import 'package:flutter/material.dart';
 
 class Login {
+  // ignore: non_constant_identifier_names
   login_services(
       {required String email,
       required String password,
