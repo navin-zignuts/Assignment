@@ -54,33 +54,30 @@ class _DashBoardState extends State<DashBoard> {
           return Future.value(value);
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
-              currentIndex: indx,
-              onTap: (value) {
-                setState(() {
-                  indx = value;
-                });
-              },
-              unselectedItemColor: Colors.grey,
-              fixedColor: ColorManager.Primarytheme,
-              // ignore: prefer_const_literals_to_create_immutables
-              items: [
-                const BottomNavigationBarItem(
-                    icon: Icon(Icons.home), label: StringManager.HomeTitle),
-                const BottomNavigationBarItem(
-                    icon: Icon(Icons.person), label: StringManager.Vendors),
-                const BottomNavigationBarItem(
-                    icon: Icon(Icons.list), label: StringManager.Lists),
-                const BottomNavigationBarItem(
-                    icon: Icon(Icons.category),
-                    label: StringManager.Categories),
-                const BottomNavigationBarItem(
-                    icon: Icon(Icons.more), label: StringManager.Categories),
-              ]),
-          body: screens[indx],
-        ),
+      child: Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: indx,
+            onTap: (value) {
+              setState(() {
+                indx = value;
+              });
+            },
+            unselectedItemColor: Colors.grey,
+            fixedColor: ColorManager.Primarytheme,
+            // ignore: prefer_const_literals_to_create_immutables
+            items: [
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.home), label: StringManager.HomeTitle),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.person), label: StringManager.Vendors),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.list), label: StringManager.Lists),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.category), label: StringManager.Categories),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.more), label: StringManager.Categories),
+            ]),
+        body: screens[indx],
       ),
     );
   }

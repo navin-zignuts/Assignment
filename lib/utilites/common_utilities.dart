@@ -55,6 +55,7 @@ class CommonUtilities {
             )));
   }
 
+//Input TextFormField Decoration for Adding New Wishlist
   static getTextInputDecorWishlist(_listnames, Function() addData) {
     return InputDecoration(
         focusedErrorBorder: OutlineInputBorder(
@@ -69,7 +70,7 @@ class CommonUtilities {
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide(width: 2, color: ColorManager.Primarytheme)),
-        hintText: "New List",
+        hintText: "         New List",
         hintStyle: TextStyle(
             fontWeight: FontWeight.bold, color: ColorManager.Primarytheme),
         suffixIcon: Padding(

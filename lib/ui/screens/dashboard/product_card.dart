@@ -57,7 +57,7 @@ class _ProductCardState extends State<ProductCard> {
           height: 150,
           width: 100,
           child: Row(
-            //mainAxisAlignment: MainAxisAlignment.,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
@@ -119,79 +119,79 @@ class _ProductCardState extends State<ProductCard> {
                       ))
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        width: 60,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Image.asset(ImageAssets.Tesco),
-                        )),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      widget.snapshot.child('pname').value.toString(),
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      widget.snapshot.child('desc').value.toString(),
-                      style: TextStyle(color: ColorManager.pr_desc),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                width: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 8, top: 8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const SizedBox(
-                      height: 26,
-                    ),
-                    const Text(
-                      '1 x kg',
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.currency_rupee,
-                          size: 20,
-                          color: ColorManager.Primarytheme,
-                        ),
-                        Text(
-                          widget.snapshot.child('prize').value.toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: ColorManager.Primarytheme),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Column(
+              Expanded(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      //color: Colors.amber,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(15),
+                          bottomRight: Radius.circular(15))),
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
+                          SizedBox(
+                              width: 70, child: Image.asset(ImageAssets.Tesco)),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.snapshot.child('pname').value.toString(),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const Text(
+                            '1 x kg',
+                            style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '500 g - ₹30',
+                            style: const TextStyle(
+                                fontSize: 13, color: Colors.black54),
+                          ),
+                          Text(
+                            '₹${widget.snapshot.child('prize').value.toString()}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: ColorManager.Primarytheme),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.snapshot.child('desc').value.toString(),
+                            style: TextStyle(color: ColorManager.pr_desc),
+                          ),
+                        ],
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 6),
+                          child: Container(
                             height: 30,
+                            width: 100,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
                                 color: ColorManager.faButton),
@@ -269,13 +269,13 @@ class _ProductCardState extends State<ProductCard> {
                                     ),
                                   )
                                 ]),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              )
+              ),
             ],
           )),
     );

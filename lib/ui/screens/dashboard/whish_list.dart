@@ -117,16 +117,19 @@ class _WListsState extends State<WLists> {
                                             const EdgeInsets.only(left: 10),
                                         child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  top: 30),
+                                                  top: 10),
                                               child: Text(
                                                 snapshot.data?.docs[index]
                                                     ['name'],
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.w700,
+                                                    color: Colors.black54,
+                                                    fontWeight: FontWeight.w500,
                                                     fontSize: 18),
                                               ),
                                             ),

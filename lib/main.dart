@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:first_app/ui/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
-Future main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const HomePage());
